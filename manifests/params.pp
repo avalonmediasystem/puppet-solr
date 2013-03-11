@@ -1,7 +1,8 @@
 class solr::params {
   $solr_version         = '4.1.0'
   $tomcat_webapps       = '/usr/local/tomcat/webapps'
-  $user                 = 'tomcat'
+  $tomcat_root          = '/usr/local/tomcat'
+  $user                 = 'tomcat7'
   $group                = 'tomcat'
   $solr_home            = '/usr/share/solr'
   $server_host          = $::fqdn
