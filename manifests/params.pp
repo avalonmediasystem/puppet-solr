@@ -1,6 +1,6 @@
 class solr::params {
-  $solr_version         = '4.1'
-  $tomcat_home          = '/usr/share/tomcat'
+  $solr_version         = '4.1.0'
+  $tomcat_webapps       = '/usr/local/tomcat/webapps'
   $user                 = 'tomcat'
   $group                = 'tomcat'
   $solr_home            = '/usr/share/solr'
