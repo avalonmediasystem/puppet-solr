@@ -27,5 +27,5 @@ class solr::config (
   #
   #
   #
-  #}
+}
 
