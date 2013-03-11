@@ -20,12 +20,12 @@ class solr::config (
     notify  => Service['tomcat'],
   }
 
-  file { 'solrconfig.xml':
-    ensure  => file,
-    content => template('solr/solrconfig.xml.erb'),
-    path    => $
-
-
-
-}
+  #  file { 'solrconfig.xml':
+  #    ensure  => file,
+  #    content => template('solr/solrconfig.xml.erb'),
+  #    path    => 
+  #
+  #
+  #
+  #}
 
