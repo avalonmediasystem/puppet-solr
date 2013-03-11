@@ -1,5 +1,5 @@
 class solr::config (
-  $tomcat_home = $solr::params::tomcat_home,
+  $tomcat_home = $solr::params::tomcat_webapps,
   $user        = $solr::params::user,
   $group       = $solr::params::group,
   $version     = $solr::params::solr_version,
