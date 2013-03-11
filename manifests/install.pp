@@ -1,30 +1,32 @@
 class solr::install (
-   
-) inherits solr::params {
+  
+  $solr           = $solr::params::solr_version,
+  $tomcat_webapps = $solr::params::tomcat_webapps,
+)  inherits solr::params {
 
-  staging::file { "solr-$solr::params::solr_version.tgz":
-    source  => "http://www.gtlib.gatech.edu/pub/apache/lucene/solr/$solr::params::solr_version/solr-$solr::params::solr_version.tgz",
+  staging::file { "solr-$solr.tgz":
+    source  => "http://www.gtlib.gatech.edu/pub/apache/lucene/solr/$solr/solr-$solr.tgz",
     timeout => 1200,
     subdir  => solr,
   }
 
-  staging::extract { "solr-$solr::params::solr_version.tgz":
+  staging::extract { "solr-$solr.tgz":
     target  => '/usr/local/tomcat',
     creates => '/usr/local/tomcat/solr-4.1.0',
-    require => Staging::File["solr-$solr::params::solr_version.tgz"],
+    require => Staging::File["solr-$solr.tgz"],
   }
 
   exec { 'copy_solr_war':
-    command => "cp /usr/local/tomcat/solr-$solr::params::solr_version/dist/solr-$solr::params::solr_version.war $solr::params::tomcat_webapps",
+    command => "cp /usr/local/tomcat/solr-$solr/dist/solr-$solr.war $tomcat_webapps",
     path    => ['/usr/bin/','/bin/'],
-    creates => "$solr::params::tomcat_webapps/solr-$solr::params::solr_version.war",
-    require => Staging::Extract["solr-$solr::params::solr_version.tgz"],
+    creates => "$tomcat_webapps/solr-$solr.war",
+    require => Staging::Extract["solr-$solr.tgz"],
   }
 
   file { 'solr_current':
     ensure  => link,
-    path    => "$solr::params::tomcat_webapps/solr",
-    target  => "$solr::params::tomcat_webapps/solr-$solr::params::solr_version/",
+    path    => "$tomcat_webapps/solr",
+    target  => "$tomcat_webapps/solr-$solr/",
     owner   => $solr::params::user,
     group   => $solr::params::group,
     require => Exec['copy_solr_war'],
