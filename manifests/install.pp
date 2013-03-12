@@ -8,6 +8,8 @@ class solr::install (
     source  => "http://www.gtlib.gatech.edu/pub/apache/lucene/solr/$solr/solr-$solr.tgz",
     timeout => 1200,
     subdir  => solr,
+    ##TODO Should probably go into a tomcat module specific to our tomcat package
+    require => Package['tomcat'],
   }
 
   staging::extract { "solr-$solr.tgz":
