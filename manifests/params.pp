@@ -1,5 +1,5 @@
 class solr::params {
-  $solr_version         = '4.1.0'
+  $solr_version         = '4.2.0'
   $tomcat_webapps       = '/usr/local/tomcat/webapps'
   $tomcat_webapps_conf  = '/usr/local/tomcat/conf/Catalina/localhost/'
   $tomcat_root          = '/usr/local/tomcat'

@@ -14,9 +14,17 @@ class solr::install (
 
   staging::extract { "solr-$solr.tgz":
     target  => '/usr/local/tomcat',
-    creates => '/usr/local/tomcat/solr-4.1.0',
+    creates => "/usr/local/tomcat/solr-$solr",
     require => Staging::File["solr-$solr.tgz"],
   }
+
+    file { "/usr/local/tomcat/solr-$solr":
+      ensure  => directory,
+      owner   => tomcat7,
+      group   => tomcat,
+      recurse => true,
+      require => Staging::Extract["solr-$solr.tgz"],
+    }
 
   exec { 'copy_solr_war':
     command => "cp /usr/local/tomcat/solr-$solr/dist/solr-$solr.war $tomcat_webapps",
