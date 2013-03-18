@@ -9,7 +9,8 @@ class solr::install (
     timeout => 1200,
     subdir  => solr,
     ##TODO Should probably go into a tomcat module specific to our tomcat package
-    require => Package['tomcat'],
+    require => Class['tomcat'],
+    notify  => Service['tomcat'],
   }
 
   staging::extract { "solr-$solr.tgz":
@@ -39,7 +40,8 @@ class solr::install (
     target  => "$tomcat_webapps/solr-$solr/",
     owner   => $solr::params::user,
     group   => $solr::params::group,
-    require => Exec['copy_solr_war'],
+    require => [Exec['copy_solr_war'],Class['tomcat::service']],
+    
   }
 
 

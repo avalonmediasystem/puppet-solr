@@ -19,7 +19,7 @@ class solr::config (
     content => template('solr/solr.xml.erb'),
     path    => "$tomcat_webapps_conf/solr.xml",
     require => Class['solr::install'],
-    notify  => Service['tomcat'],
+    #notify  => Service['tomcat'],
   }
   
   file { "$solr_home":
@@ -62,7 +62,7 @@ class solr::config (
     group   => $solr::params::group,
     recurse => true,
     require => [File['solr_collection1'],File['solr_current']],
-    notify  => Service['tomcat'],
+    #notify  => Service['tomcat'],
   }
   #  file { 'solr_conf_avalon':
   #    ensure  => directory,
