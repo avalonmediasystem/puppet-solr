@@ -29,9 +29,9 @@ class solr::install (
     }
 
   exec { 'copy_solr_war':
-    command => "cp /usr/local/tomcat/solr-$solr/dist/solr-$solr.war $tomcat_webapps",
+    command => "cp /usr/local/tomcat/solr-$solr/dist/solr-$solr.war /usr/local/solr/solr.war",
     path    => ['/usr/bin/','/bin/'],
-    creates => "$tomcat_webapps/solr-$solr.war",
+    creates => "/usr/local/solr/solr.war",
     require => Staging::Extract["solr-$solr.tgz"],
   }
 
@@ -55,15 +55,15 @@ class solr::install (
     require => File["$solr::config::solr_home"],
   }
 
-  file { 'solr_current':
-    ensure  => link,
-    path    => "$tomcat_webapps/solr",
-    target  => "$tomcat_webapps/solr-$solr/",
-    owner   => $solr::params::user,
-    group   => $solr::params::group,
-    require => [Exec['copy_solr_war'],Class['tomcat::service']],
-    
-  }
+#  file { 'solr_current':
+#    ensure  => link,
+#    path    => "$tomcat_webapps/solr",
+#    target  => "$tomcat_webapps/solr-$solr/",
+#    owner   => $solr::params::user,
+#    group   => $solr::params::group,
+#    require => [Exec['copy_solr_war'],Class['tomcat::service']],
+#    
+#  }
 
 
 }
