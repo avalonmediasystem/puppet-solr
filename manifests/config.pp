@@ -26,7 +26,15 @@ class solr::config (
     ensure  => directory,
     owner   => $user,
     group   => $group,
-    require => File['solr.xml'],
+    #require => File['solr.xml'],
+  }
+
+  file {'/usr/local/solr/solr.xml':
+    ensure  => present,
+    owner   => $user,
+    group   => $group,
+    source  => 'puppet:///local/solr/solr.xml',
+    require => File["$solr_home"],
   }
   ##TODO parameterize
   #    file { 'solr_conf':
@@ -64,6 +72,18 @@ class solr::config (
     require => [File['solr_collection1'],File['solr_current']],
     #notify  => Service['tomcat'],
   }
+  
+  file { 'solr_conf_avalon':
+    ensure  => directory,
+    path    => "$solr_home/avalon/conf",
+    source  => 'puppet:///local/solr/avalon/conf',
+    owner   => $solr::params::user,
+    group   => $solr::params::group,
+    recurse => true,
+    require => [File['solr_avalon'],File['solr_current']],
+    #notify  => Service['tomcat'],
+  }
+
   #  file { 'solr_conf_avalon':
   #    ensure  => directory,
   #    path    => "$solr_home/avalon/conf",

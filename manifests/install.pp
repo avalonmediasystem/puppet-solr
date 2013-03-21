@@ -3,6 +3,7 @@ class solr::install (
   $solr           = $solr::params::solr_version,
   $tomcat_webapps = $solr::params::tomcat_webapps,
 )  inherits solr::params {
+  include solr::config
 
   staging::file { "solr-$solr.tgz":
     source  => "http://www.gtlib.gatech.edu/pub/apache/lucene/solr/$solr/solr-$solr.tgz",
@@ -32,6 +33,26 @@ class solr::install (
     path    => ['/usr/bin/','/bin/'],
     creates => "$tomcat_webapps/solr-$solr.war",
     require => Staging::Extract["solr-$solr.tgz"],
+  }
+
+  file { 'copy_solr_libs':
+    ensure  => directory,
+    recurse => true,
+    owner   => tomcat7,
+    group   => tomcat,
+    source  => 'puppet:///local/solr/lib',
+    path    => '/usr/local/solr/lib',
+    require => File["$solr::config::solr_home"],
+  }
+
+  file { 'copy_solr_contrib':
+    path    => '/usr/local/solr/lib/contrib',
+    ensure  => directory,
+    recurse => true,
+    owner   => tomcat7,
+    group   => tomcat,
+    source  => 'puppet:///local/solr/contrib',
+    require => File["$solr::config::solr_home"],
   }
 
   file { 'solr_current':
