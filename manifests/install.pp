@@ -20,19 +20,19 @@ class solr::install (
     require => Staging::File["solr-$solr.tgz"],
   }
 
-    file { "/usr/local/tomcat/solr-$solr":
-      ensure  => directory,
-      owner   => tomcat7,
-      group   => tomcat,
-      recurse => true,
-      require => Staging::Extract["solr-$solr.tgz"],
-    }
+  file { "/usr/local/tomcat/solr-$solr":
+    ensure  => directory,
+    owner   => tomcat7,
+    group   => tomcat,
+    recurse => true,
+    require => Staging::Extract["solr-$solr.tgz"],
+  }
 
   exec { 'copy_solr_war':
-    command => "cp /usr/local/tomcat/solr-$solr/dist/solr-$solr.war /usr/local/solr/solr.war",
+    command => "cp /usr/local/tomcat/solr-$solr/dist/solr-$solr.war $solr_home/solr.war",
     path    => ['/usr/bin/','/bin/'],
-    creates => "/usr/local/solr/solr.war",
-    require => Staging::Extract["solr-$solr.tgz"],
+    creates => "$solr_home/solr.war",
+    require => [Staging::Extract["solr-$solr.tgz"],File[$solr_home]],
   }
 
   file { 'copy_solr_libs':
@@ -41,12 +41,12 @@ class solr::install (
     owner   => tomcat7,
     group   => tomcat,
     source  => 'puppet:///local/solr/lib',
-    path    => '/usr/local/solr/lib',
+    path    => "$solr_home/lib",
     require => File["$solr::config::solr_home"],
   }
 
   file { 'copy_solr_contrib':
-    path    => '/usr/local/solr/lib/contrib',
+    path    => "$solr_home/lib/contrib",
     ensure  => directory,
     recurse => true,
     owner   => tomcat7,

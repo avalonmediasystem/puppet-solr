@@ -26,7 +26,6 @@ class solr::config (
     ensure  => directory,
     owner   => $user,
     group   => $group,
-    #require => File['solr.xml'],
   }
 
   file {'/usr/local/solr/solr.xml':
