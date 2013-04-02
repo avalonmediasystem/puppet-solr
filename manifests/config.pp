@@ -19,7 +19,6 @@ class solr::config (
     content => template('solr/solr.xml.erb'),
     path    => "$tomcat_webapps_conf/solr.xml",
     require => Class['solr::install'],
-    #notify  => Service['tomcat'],
   }
   
   file { "$solr_home":
@@ -35,16 +34,7 @@ class solr::config (
     source  => 'puppet:///local/solr/solr.xml',
     require => File["$solr_home"],
   }
-  ##TODO parameterize
-  #    file { 'solr_conf':
-  #      ensure  => directory,
-  #      owner   => $user,
-  #      group   => $group,
-  #      require => File['solr_conf_avalon'],
-  #      path    => "$solr_home/avalon/conf/",
-  #    }
-  #
-  ##TODO parameterize
+
   file { 'solr_avalon':
     ensure  => directory,
     owner   => $user,
@@ -60,20 +50,8 @@ class solr::config (
     owner   => $solr::params::user,
     group   => $solr::params::group,
     recurse => true,
-    require => [File['solr_avalon'],Exec['copy_solr_war'],Class['tomcat::service']],
-    #notify  => Service['tomcat'],
+    require => [File['solr_avalon'],File["$solr_home/solr.war"],Class['tomcat::service']],
   }
 
-  #  file { 'solr_conf_avalon':
-  #    ensure  => directory,
-  #    path    => "$solr_home/avalon/conf",
-  #    source  => 'puppet:///local/solr/avalon/conf',
-  #    owner   => $solr::params::user,
-  #    group   => $solr::params::group,
-  #    recurse => true,
-  #    require => [File['solr_collection1'],File['solr_current']],
-  #    notify  => Service['tomcat'],
-  #  }
-  ##TODO parameterize
 }
 

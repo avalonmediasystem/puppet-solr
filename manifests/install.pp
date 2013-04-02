@@ -4,6 +4,7 @@ class solr::install (
   $tomcat_webapps = $solr::params::tomcat_webapps,
 )  inherits solr::params {
   include solr::config
+  include staging
 
   staging::file { "solr-$solr.tgz":
     source  => "http://www.gtlib.gatech.edu/pub/apache/lucene/solr/$solr/solr-$solr.tgz",
@@ -15,23 +16,15 @@ class solr::install (
   }
 
   staging::extract { "solr-$solr.tgz":
-    target  => '/usr/local/tomcat',
-    creates => "/usr/local/tomcat/solr-$solr",
+    target  => "${staging::path}/solr",
+    creates => "${staging::path}/solr/solr-$solr",
     require => Staging::File["solr-$solr.tgz"],
   }
 
-  file { "/usr/local/tomcat/solr-$solr":
-    ensure  => directory,
+  file { "$solr_home/solr.war":
+    source  => "${staging::path}/solr/solr-$solr/dist/solr-$solr.war",
     owner   => tomcat7,
     group   => tomcat,
-    recurse => true,
-    require => Staging::Extract["solr-$solr.tgz"],
-  }
-
-  exec { 'copy_solr_war':
-    command => "cp /usr/local/tomcat/solr-$solr/dist/solr-$solr.war $solr_home/solr.war",
-    path    => ['/usr/bin/','/bin/'],
-    creates => "$solr_home/solr.war",
     require => [Staging::Extract["solr-$solr.tgz"],File[$solr_home]],
   }
 
@@ -54,17 +47,6 @@ class solr::install (
     source  => 'puppet:///local/solr/contrib',
     require => File["$solr::config::solr_home"],
   }
-
-#  file { 'solr_current':
-#    ensure  => link,
-#    path    => "$tomcat_webapps/solr",
-#    target  => "$tomcat_webapps/solr-$solr/",
-#    owner   => $solr::params::user,
-#    group   => $solr::params::group,
-#    require => [Exec['copy_solr_war'],Class['tomcat::service']],
-#    
-#  }
-
 
 }
 
