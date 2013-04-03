@@ -28,8 +28,8 @@ class solr::install (
     require => [Staging::Extract["solr-$solr.tgz"],File[$solr_home]],
   }
 
-  file { "$solr_home/lib/contrib":
-    ensure => directory,
+  file { ["$solr_home/lib", "$solr_home/lib/contrib"]:
+    ensure  => directory,
     owner   => tomcat7,
     group   => tomcat,
     require => [Staging::Extract["solr-$solr.tgz"],File[$solr_home]],
