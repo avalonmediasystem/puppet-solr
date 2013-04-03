@@ -4,7 +4,7 @@ class solr::contrib (
 	File { 
     owner   => tomcat7,
     group   => tomcat,
-		require => [Staging::Extract["solr-$solr.tgz"],File[$solr_home]]
+		require => [Staging::Extract["solr-$solr.tgz"],File[$solr_home],File["$solr_home/lib/contrib"]]
 	}
 
 	file { "$solr_home/lib/solr-analysis-extras-$solr.jar":
