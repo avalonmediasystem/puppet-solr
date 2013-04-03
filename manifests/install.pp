@@ -28,25 +28,9 @@ class solr::install (
     require => [Staging::Extract["solr-$solr.tgz"],File[$solr_home]],
   }
 
-  file { 'copy_solr_libs':
-    ensure  => directory,
-    recurse => true,
-    owner   => tomcat7,
-    group   => tomcat,
-    source  => 'puppet:///local/solr/lib',
-    path    => "$solr_home/lib",
-    require => File["$solr::config::solr_home"],
+  class { 'solr::contrib':
+    solr    => $solr,
+    require => [Staging::Extract["solr-$solr.tgz"],File[$solr_home]],
   }
-
-  file { 'copy_solr_contrib':
-    path    => "$solr_home/lib/contrib",
-    ensure  => directory,
-    recurse => true,
-    owner   => tomcat7,
-    group   => tomcat,
-    source  => 'puppet:///local/solr/contrib',
-    require => File["$solr::config::solr_home"],
-  }
-
 }
 
