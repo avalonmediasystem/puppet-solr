@@ -31,7 +31,7 @@ class solr::config (
     ensure  => present,
     owner   => $user,
     group   => $group,
-    source  => 'puppet:///local/solr/solr.xml',
+    source  => 'puppet:///modules/solr/solr.xml',
     require => File["$solr_home"],
   }
 
@@ -46,7 +46,7 @@ class solr::config (
   file { 'solr_conf_avalon':
     ensure  => directory,
     path    => "$solr_home/avalon/conf",
-    source  => 'puppet:///local/solr/avalon/conf',
+    source  => 'puppet:///modules/solr/avalon/conf',
     owner   => $solr::params::user,
     group   => $solr::params::group,
     recurse => true,
