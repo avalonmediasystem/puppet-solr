@@ -67,4 +67,21 @@ class solr::config (
     require => [File['solr_avalon'],File["$solr_home/solr.war"],Class['tomcat::service']],
   }
 
+  file { 'solr_mhorn':
+    ensure  => directory,
+    owner   => $user,
+    group   => $group,
+    path    => "$solr_home/mhorn",
+    require => File["$solr_home"],
+  }
+  
+  file { 'solr_conf_mhorn':
+    ensure  => directory,
+    path    => "$solr_home/mhorn/conf",
+    source  => 'puppet:///modules/solr/mhorn/conf',
+    owner   => $solr::params::user,
+    group   => $solr::params::group,
+    recurse => true,
+    require => [File['solr_mhorn'],File["$solr_home/solr.war"],Class['tomcat::service']],
+  }
 }
