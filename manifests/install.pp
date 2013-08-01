@@ -21,7 +21,7 @@ class solr::install (
   include staging
 
   staging::file { "solr-$solr.tgz":
-    source  => "http://www.gtlib.gatech.edu/pub/apache/lucene/solr/$solr/solr-$solr.tgz",
+    source  => "http://archive.apache.org/dist/lucene/solr/$solr/solr-$solr.tgz",
     timeout => 1200,
     subdir  => solr,
     ##TODO Should probably go into a tomcat module specific to our tomcat package
