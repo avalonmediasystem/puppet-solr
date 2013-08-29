@@ -108,7 +108,12 @@
   <requestHandler name="standard" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="echoParams">explicit</str>
-       <str name="defType">lucene</str>
+       <!--
+        This param is commented out because it causes an "Unknown query parser"
+        error on solr 4.2.0 + Tomcat 7. Since lucene is the default anyway,
+        removing it has no ill effects.
+        <str name="defType">lucene</str>
+       -->
      </lst>
   </requestHandler>
 

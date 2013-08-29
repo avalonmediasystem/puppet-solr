@@ -66,6 +66,10 @@ class solr::config (
     recurse => true,
     require => [File['solr_avalon'],File["$solr_home/solr.war"],Class['tomcat::service']],
   }
+  ~>
+  exec { 'reload-avalon-core':
+    command => "/usr/bin/curl 'http://localhost:8983/solr/admin/cores?action=RELOAD&core=avalon'"
+  }
 
   file { 'solr_mhorn':
     ensure  => directory,
