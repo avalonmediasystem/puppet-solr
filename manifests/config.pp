@@ -26,6 +26,10 @@ class solr::config (
 
 ) inherits solr::params {
 
+  File {
+    selinux_ignore_defaults => true
+  }
+
   file { 'solr.xml':
     ensure  => file,
     owner   => $user,
