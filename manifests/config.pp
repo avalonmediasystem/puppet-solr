@@ -68,6 +68,7 @@ class solr::config (
     owner   => $solr::params::user,
     group   => $solr::params::group,
     recurse => true,
+    replace => true,
     require => [File['solr_avalon'],File["$solr_home/solr.war"],Class['tomcat::service']],
   }
   ~>
